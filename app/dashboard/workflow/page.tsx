@@ -53,10 +53,28 @@ const WorkflowPage = () => {
       <section>
         <h2 className="text-2xl font-bold mb-4">Workflow Activity</h2>
         <div className="bg-card p-6 rounded-lg shadow border border-border">
-          <p className="text-sm text-muted-foreground">
-            Select a workflow to view its logs and recent activity. Logs for the
-            last runs will appear here.
-          </p>
+          <ul className="space-y-4">
+            <li className="text-sm text-muted-foreground">
+              <span className="text-green-500 font-bold">[Success]</span> Build
+              Workflow completed at 10:15 AM.
+            </li>
+            <li className="text-sm text-muted-foreground">
+              <span className="text-red-500 font-bold">[Failed]</span> Deploy
+              Workflow failed at 8:45 AM. Error: "Invalid configuration file."
+            </li>
+            <li className="text-sm text-muted-foreground">
+              <span className="text-yellow-500 font-bold">[In Progress]</span>{" "}
+              Test Workflow is currently running since 7:30 AM.
+            </li>
+            <li className="text-sm text-muted-foreground">
+              <span className="text-green-500 font-bold">[Success]</span> Build
+              Workflow completed yesterday at 4:00 PM.
+            </li>
+            <li className="text-sm text-muted-foreground">
+              <span className="text-red-500 font-bold">[Failed]</span> Deploy
+              Workflow failed yesterday at 1:30 PM. Error: "Network timeout."
+            </li>
+          </ul>
         </div>
       </section>
     </div>

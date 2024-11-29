@@ -1,4 +1,12 @@
+"use client";
+
+import { useUser } from "@/components/auth-provider";
+import { useState } from "react";
+
 function Settings() {
+  const user = useUser();
+  const [isLoading, setIsLoading] = useState(false);
+
   return (
     <div className="min-h-screen bg-background text-foreground p-8">
       <header className="mb-8">
@@ -9,62 +17,76 @@ function Settings() {
       </header>
 
       <main>
-        {/* General Section */}
-        <section id="general" className="mb-8">
-          <h2 className="text-2xl font-bold">General Settings</h2>
+        {/* GitHub Auth Token */}
+        <section id="github-token" className="mb-8">
+          <h2 className="text-2xl font-bold">GitHub Authentication</h2>
           <div className="mt-4 bg-card p-6 rounded-lg shadow border border-border">
-            <p className="text-sm text-muted-foreground">
-              Manage basic settings such as your display name, theme, and
-              preferences.
+            <p className="text-sm text-muted-foreground mb-4">
+              Enter your GitHub personal access token to enable repository
+              integrations.
             </p>
-            {/* Add general settings form/components here */}
+            <div className="flex flex-col gap-4">
+              <label className="text-sm font-medium" htmlFor="github-token">
+                GitHub Token
+              </label>
+              <div className="flex items-center gap-2">
+                <input
+                  id="github-token"
+                  type="password"
+                  placeholder="Enter your GitHub token"
+                  className="px-4 w-full py-2 border border-border rounded-lg bg-input text-input-foreground focus:outline-none focus:ring focus:ring-primary/50"
+                />
+                <button className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90">
+                  Save
+                </button>
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* Account Section */}
-        <section id="account" className="mb-8">
-          <h2 className="text-2xl font-bold">Account Settings</h2>
+        {/* Discord Webhook URL */}
+        <section id="discord-webhook" className="mb-8">
+          <h2 className="text-2xl font-bold">Discord Notifications</h2>
           <div className="mt-4 bg-card p-6 rounded-lg shadow border border-border">
-            <p className="text-sm text-muted-foreground">
-              Update your account information and manage linked accounts.
+            <p className="text-sm text-muted-foreground mb-4">
+              Configure your Discord webhook URL to receive notifications.
             </p>
-            {/* Add account settings form/components here */}
+            <div className="flex flex-col gap-4">
+              <label className="text-sm font-medium" htmlFor="discord-webhook">
+                Discord Webhook URL
+              </label>
+              <div className="flex items-center gap-2">
+                <input
+                  id="discord-webhook"
+                  type="url"
+                  placeholder="Enter your Discord webhook URL"
+                  className="px-4 w-full py-2 border border-border rounded-lg bg-input text-input-foreground focus:outline-none focus:ring focus:ring-primary/50"
+                />
+                <button className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90">
+                  Save
+                </button>
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* Notifications Section */}
-        <section id="notifications" className="mb-8">
-          <h2 className="text-2xl font-bold">Notifications</h2>
+        {/* Logout Section */}
+        <section id="logout" className="mb-8">
+          <h2 className="text-2xl font-bold">Logout</h2>
           <div className="mt-4 bg-card p-6 rounded-lg shadow border border-border">
-            <p className="text-sm text-muted-foreground">
-              Configure your notification preferences for emails, Discord, and
-              in-app alerts.
+            <p className="text-sm text-muted-foreground mb-4">
+              Logout from your account securely.
             </p>
-            {/* Add notification settings form/components here */}
-          </div>
-        </section>
-
-        {/* Integrations Section */}
-        <section id="integrations" className="mb-8">
-          <h2 className="text-2xl font-bold">Integrations</h2>
-          <div className="mt-4 bg-card p-6 rounded-lg shadow border border-border">
-            <p className="text-sm text-muted-foreground">
-              Manage integrations with GitHub, Discord, and other third-party
-              services.
-            </p>
-            {/* Add integrations settings form/components here */}
-          </div>
-        </section>
-
-        {/* Security Section */}
-        <section id="security" className="mb-8">
-          <h2 className="text-2xl font-bold">Security Settings</h2>
-          <div className="mt-4 bg-card p-6 rounded-lg shadow border border-border">
-            <p className="text-sm text-muted-foreground">
-              Update your password, enable 2FA, and manage other security
-              settings.
-            </p>
-            {/* Add security settings form/components here */}
+            <button
+              disabled={isLoading}
+              onClick={() => {
+                setIsLoading(true);
+                user.logout();
+              }}
+              className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+            >
+              {isLoading ? "Logging out..." : "Logout"}
+            </button>
           </div>
         </section>
       </main>

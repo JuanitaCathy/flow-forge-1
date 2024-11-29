@@ -2,7 +2,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import { useRef } from "react";
-import appScreen from "../../assets/images/product.avif";
 
 export const ProductShowcase = () => {
   const appImage = useRef<HTMLImageElement>(null);
@@ -35,10 +34,12 @@ export const ProductShowcase = () => {
           }}
         >
           <Image
-            src={appScreen}
+            src={"/thumbnail.png"}
             ref={appImage}
+            width={1200}
+            height={1200}
             alt="FlowForge dashboard interface"
-            className="mt-14"
+            className="mt-14 rounded-xl"
           />
         </motion.div>
       </div>

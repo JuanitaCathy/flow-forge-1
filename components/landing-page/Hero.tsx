@@ -1,11 +1,15 @@
 "use client";
+
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import CursorImage from "../../assets/images/cursor.png";
 import MessageImage from "../../assets/images/message.png";
+import { useUser } from "../auth-provider";
 
 export const Hero = () => {
+  const user = useUser();
+
   return (
     <div className="bg-black text-white bg-[linear-gradient(to_bottom,#000,#200D42_34%,#4F21A1_65%,#A46EDB_82%)] py-[72px] sm:py-24 relative overflow-clip">
       <div className="absolute h-[375px] w-[750px] sm:w-[1536px] sm:h-[768px] lg:w-[2400px] llg:h-[800px] rounded-[100%] bg-black left-1/2 -translate-x-1/2 border border-[#B48CDE] bg-[radial-gradient(closest-side,#000_82%,#9560EB)] top-[calc(100%-96px)] sm:top-[calc(100%-120px)]"></div>
@@ -54,11 +58,19 @@ export const Hero = () => {
           </p>
         </div>
         <div className="flex justify-center mt-8">
-          <Link href={"/sign-in"}>
-            <button className="bg-white text-black py-3 px-5 rounded-lg font-medium">
-              Get Started
-            </button>
-          </Link>
+          {user.current ? (
+            <Link href={"/dashboard"}>
+              <button className="bg-white text-black py-3 px-5 rounded-lg font-medium">
+                Get Started
+              </button>
+            </Link>
+          ) : (
+            <Link href={"/sign-in"}>
+              <button className="bg-white text-black py-3 px-5 rounded-lg font-medium">
+                Get Started
+              </button>
+            </Link>
+          )}
         </div>
       </div>
     </div>
