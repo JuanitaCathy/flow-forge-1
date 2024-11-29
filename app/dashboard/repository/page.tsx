@@ -36,7 +36,7 @@ function Repository() {
       {/* Repository Actions */}
       <section className="mb-8">
         <h2 className="text-2xl font-bold mb-4">Actions</h2>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-row gap-4">
           <button className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90">
             Create Issue
           </button>
