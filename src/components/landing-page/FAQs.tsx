@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
+import { MinusIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
 
 const items = [
@@ -41,19 +42,7 @@ const AccordinationItem = ({
     >
       <div className="flex items-center">
         <span className="flex-1 text-lg font-bold">{question}</span>
-        {isOpen ? (
-          <img
-            src="../../assets/icons/minus.svg"
-            alt="Collapse"
-            className="w-5 h-5"
-          />
-        ) : (
-          <img
-            src="../../assets/icons/plus.svg"
-            alt="Expand"
-            className="w-5 h-5"
-          />
-        )}
+        {isOpen ? <MinusIcon size={20} /> : <PlusIcon size={20} />}
       </div>
       <AnimatePresence>
         {isOpen && (
