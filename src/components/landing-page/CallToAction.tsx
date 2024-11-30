@@ -45,16 +45,6 @@ export const CallToAction = () => {
           Kestra for seamless orchestration and AI-powered automation to save
           time and boost productivity.
         </p>
-        <form className="mt-10 flex flex-col gap-2.5 max-w-sm mx-auto sm:flex-row">
-          <input
-            type="email"
-            placeholder="example-email@gmail.com"
-            className="h-12 bg-white/20 rounded-lg px-5 font-medium placeholder:text-[#9CA3AF] sm:flex-1"
-          />
-          <button className="bg-white text-black h-12 rounded-lg px-5">
-            Get access
-          </button>
-        </form>
       </div>
     </div>
   );

@@ -1,9 +1,4 @@
-import {
-  InstagramIcon,
-  LinkedinIcon,
-  TwitterIcon,
-  YoutubeIcon,
-} from "lucide-react";
+import { LucideGithub } from "lucide-react";
 
 export const Footer = () => {
   return (
@@ -12,18 +7,15 @@ export const Footer = () => {
         <div className="text-center ml-4">
           2024 Flow Forge. All rights are reserved.
         </div>
-        <ul className="flex justify-center gap-4 mr-4">
+        <ul className="flex justify-center gap-4 mr-8">
           <li>
-            <TwitterIcon className="w-6 h-6" />
-          </li>
-          <li>
-            <LinkedinIcon className="w-6 h-6" />
-          </li>
-          <li>
-            <InstagramIcon className="w-6 h-6" />
-          </li>
-          <li>
-            <YoutubeIcon className="w-6 h-6" />
+            <a
+              href="https://github.com/chiragagg5k/flow-forge"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <LucideGithub className="w-6 h-6" />
+            </a>
           </li>
         </ul>
       </div>

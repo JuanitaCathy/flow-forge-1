@@ -18,7 +18,8 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "Flow Forge",
-  description: "A platform for developers to create and manage their github workflows.",
+  description:
+    "A platform for developers to create and manage their github workflows.",
 };
 
 export default function RootLayout({
