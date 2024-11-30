@@ -15,13 +15,7 @@
 
 ### :movie_camera: Demo
 
-<p align="center">
-    <a href="https://youtu.be">
-        <img src="https://img.freepik.com/free-vector/modern-red-video-media-player-template_1017-23409.jpg"/>
-    </a>
-</p>
-
-$~$
+https://github.com/user-attachments/assets/5eacb4af-2bfd-4ee7-af4d-356c5c77519c
 
 ### 🚀 Deployment
 
