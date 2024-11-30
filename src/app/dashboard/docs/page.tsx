@@ -5,7 +5,7 @@ function Docs() {
     <div className="min-h-screen bg-background flex justify-center items-center p-4">
       <div className="w-full max-w-6xl bg-white-900 text-foreground rounded-lg shadow-xl">
         <header className="mb-8 bg-gradient-to-r from-purple-700/50 to-zinc-800 p-8 rounded-xl shadow-xl text-white">
-          <h1 className="text-5xl font-extrabold mb-6 text-purple-300">
+          <h1 className="text-4xl font-extrabold mb-6 text-purple-300">
             Welcome to <span className="text-white">Flow-Forge</span>
           </h1>
           <p className="text-lg text-gray-300 mt-3 leading-relaxed">

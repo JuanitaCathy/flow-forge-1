@@ -43,6 +43,15 @@ interface RepositoryDetails {
   };
 }
 
+interface GitHubItem {
+  id: number;
+  title: string;
+  html_url: string;
+  user: {
+    login: string;
+  };
+}
+
 function Repository() {
   const { repoName } = useParams();
   const user = useUser();
@@ -58,6 +67,9 @@ function Repository() {
 
   const [githubToken, setGitHubToken] = useState<string | null>(null);
   const [discordWebhook, setDiscordWebhook] = useState<string | null>(null);
+
+  const [issues, setIssues] = useState<GitHubItem[]>([]);
+  const [pullRequests, setPullRequests] = useState<GitHubItem[]>([]);
 
   const fetchSettings = async () => {
     if (!user.current?.$id) return;
@@ -108,6 +120,20 @@ function Repository() {
         const repoResponse = await githubApi.get(
           `/repos/${fetchedUsername}/${repoName}`,
         );
+
+        const pullRequestResponse = await githubApi.get(
+          `/repos/${fetchedUsername}/${repoName}/pulls`,
+        );
+        setPullRequests(pullRequestResponse.data);
+
+        // Fetch open issues
+        const issuesResponse = await githubApi.get(
+          `/repos/${fetchedUsername}/${repoName}/issues`,
+        );
+        setIssues(
+          issuesResponse.data.filter((issue: any) => !issue.pull_request),
+        );
+
         setRepository(repoResponse.data);
         setError(null);
       } catch (err) {
@@ -129,7 +155,11 @@ function Repository() {
         toast.error(
           "Failed to create issue. Repository or settings not found.",
         );
-        setIsDialogOpen(false);
+        return;
+      }
+
+      if (!issueTitle || !issueDescription) {
+        toast.error("Please fill in all required fields.");
         return;
       }
 
@@ -147,6 +177,8 @@ function Repository() {
 
       toast.success("Issue created successfully!");
       setIsDialogOpen(false);
+
+      window.location.reload();
     } catch (error) {
       console.error("Error creating issue:", error);
     }
@@ -267,7 +299,7 @@ function Repository() {
             rel="noopener noreferrer"
             className="px-4 py-2 bg-secondary text-secondary-foreground rounded-lg hover:bg-secondary/90"
           >
-            Pull Request
+            Go to Pull Requests
           </a>
           <a
             href={repository.html_url}
@@ -280,19 +312,57 @@ function Repository() {
         </div>
       </section>
 
-      {/* Recent Activity */}
+      <section className="mb-8">
+        <h2 className="text-2xl font-bold mb-4">Open Issues</h2>
+        {issues.length === 0 ? (
+          <p className="text-sm text-muted-foreground">No open issues</p>
+        ) : (
+          <ul className="space-y-4">
+            {issues.map((issue) => (
+              <li
+                key={issue.id}
+                className="bg-card p-4 rounded-lg shadow border"
+              >
+                <a
+                  href={issue.html_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline"
+                >
+                  {issue.title}
+                </a>
+                <p className="text-sm text-muted-foreground">
+                  Opened by {issue.user.login}
+                </p>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
       <section>
-        <h2 className="text-2xl font-bold mb-4">Last Updated</h2>
-        <div className="bg-card p-6 rounded-lg shadow border border-border">
-          <p className="text-sm text-muted-foreground">
-            Last updated on{" "}
-            {new Date(repository.updated_at).toLocaleDateString(undefined, {
-              year: "numeric",
-              month: "short",
-              day: "numeric",
-            })}
-          </p>
-        </div>
+        <h2 className="text-2xl font-bold mb-4">Open Pull Requests</h2>
+        {pullRequests.length === 0 ? (
+          <p className="text-sm text-muted-foreground">No open pull requests</p>
+        ) : (
+          <ul className="space-y-4">
+            {pullRequests.map((pr) => (
+              <li key={pr.id} className="bg-card p-4 rounded-lg shadow border">
+                <a
+                  href={pr.html_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline"
+                >
+                  {pr.title}
+                </a>
+                <p className="text-sm text-muted-foreground">
+                  Opened by {pr.user.login}
+                </p>
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
     </div>
   );

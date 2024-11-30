@@ -15,8 +15,8 @@ import {
   GitBranch,
   GitPullRequest,
   LayoutDashboard,
-  Settings,
   Notebook,
+  Settings,
 } from "lucide-react";
 
 const items = [
@@ -81,6 +81,12 @@ export function DashboardSidebar({
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarMenuButton
+        asChild
+        className="mb-2 text-sm text-zinc-400 ml-1 hover:bg-sidebar-primary/10 rounded-lg active:bg-sidebar-primary/20 w-fit"
+      >
+        <a href="/">{"<- Back"}</a>
+      </SidebarMenuButton>
       <SidebarRail />
     </Sidebar>
   );

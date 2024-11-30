@@ -332,7 +332,7 @@ function Page() {
                     href={pr.html_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-500 font-medium hover:underline"
+                    className="text-purple-500 font-medium hover:underline"
                   >
                     {pr.title}
                   </a>

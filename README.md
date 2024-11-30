@@ -29,7 +29,8 @@ $~$
 
 $~$
 
-### 📊  Workflow
+### 📊 Workflow
+
 ![kestra](https://github.com/user-attachments/assets/9bf6d202-8157-470c-bbf6-14f2259bd1dd)
 
 $~$
@@ -65,18 +66,21 @@ $~$
 ### Installation Steps
 
 1. **Clone Repository**
+
    ```bash
    git clone <repo-url>
    cd ci-cd-manager
    ```
 
 2. **Install Dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Configure Environment Variables**
    Add a `.env.local` file with:
+
    ```plaintext
    GITHUB_TOKEN=<your_token>
    DISCORD_WEBHOOK_URL=<webhook_url>
@@ -84,6 +88,7 @@ $~$
    ```
 
 4. **Build Application**
+
    ```bash
    npm run build
    ```
@@ -121,6 +126,7 @@ $~$
 ### CI/CD Manager Overview
 
 Flow-Forge simplifies continuous integration and delivery with:
+
 - Workflow status tracking.
 - Automated notifications.
 - Intuitive dashboard interfaces.
@@ -136,7 +142,7 @@ Flow-Forge simplifies continuous integration and delivery with:
 - **Kestra Workflow Integration**  
   Visual workflow design for managing orchestration tasks.
 
- $~$
+$~$
 
 ### :page_facing_up: License
 

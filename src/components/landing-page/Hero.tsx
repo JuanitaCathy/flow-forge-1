@@ -24,6 +24,14 @@ export const Hero = () => {
               className="absolute right-[478px] top-[108px] hidden sm:inline"
               drag
               dragSnapToOrigin
+              animate={{
+                y: [0, -10, 0],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
             >
               <Image
                 src={CursorImage}
@@ -38,6 +46,15 @@ export const Hero = () => {
               className="absolute left-[498px] top-[56px] hidden sm:inline"
               drag
               dragSnapToOrigin
+              animate={{
+                y: [0, -10, 0],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 1,
+              }}
             >
               <Image
                 src={MessageImage}
@@ -52,23 +69,37 @@ export const Hero = () => {
         </div>
         <div className="flex justify-center">
           <p className="text-xl text-center mt-8 max-w-md">
-            Transform your GitHub workflow from chaos to clockwork. FlowForge
-            orchestrates your repositories, automates issue management, and
-            streamlines PR reviews - all from one powerful dashboard.
+            Streamline your GitHub workflow with FlowForge, automating{" "}
+            <span className="text-gradient bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">
+              issue management
+            </span>{" "}
+            and{" "}
+            <span className="text-gradient bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">
+              PR reviews
+            </span>{" "}
+            from one powerful dashboard.
           </p>
         </div>
         <div className="flex justify-center mt-8">
           {user.current ? (
             <Link href={"/dashboard"}>
-              <button className="bg-white text-black py-3 px-5 rounded-lg font-medium">
+              <motion.button
+                className="bg-white text-black py-3 px-5 rounded-lg font-medium"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
                 Get Started
-              </button>
+              </motion.button>
             </Link>
           ) : (
             <Link href={"/sign-in"}>
-              <button className="bg-white text-black py-3 px-5 rounded-lg font-medium">
+              <motion.button
+                className="bg-white text-black py-3 px-5 rounded-lg font-medium"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
                 Get Started
-              </button>
+              </motion.button>
             </Link>
           )}
         </div>
