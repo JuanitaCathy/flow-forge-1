@@ -27,6 +27,24 @@ interface GitHubEvent {
   created_at: string;
 }
 
+// Define the interface for a repository
+interface Repo {
+  id: number;
+  name: string;
+  html_url: string;
+  stargazers_count: number;
+  language?: string;
+}
+
+// Define the interface for a pull request
+interface PullRequest {
+  id: number;
+  title: string;
+  html_url: string;
+  state: string;
+  repository_url: string;
+}
+
 function Page() {
   const user = useUser();
   const [githubUser, setGithubUser] = useState(null);
@@ -35,12 +53,15 @@ function Page() {
     issuesResolved: 0,
     prsReviewed: 0,
     notifications: 0,
+    longestStreak: 0,
+    openSourceContributions: 0,
   });
+  const [languageStats, setLanguageStats] = useState<[string, number][]>([]);
   const [recentActivity, setRecentActivity] = useState<GitHubEvent[]>([]);
+  const [recentPRs, setRecentPRs] = useState<PullRequest[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Helper function to format event description
   const formatEventDescription = (event: GitHubEvent) => {
     switch (event.type) {
       case "PushEvent":
@@ -58,6 +79,37 @@ function Page() {
       default:
         return `${event.type} in ${event.repo.name}`;
     }
+  };
+
+  const fetchWithRetry = async (
+    fetchFn: () => Promise<any>,
+    maxRetries = 3,
+  ) => {
+    let retries = 0;
+    while (retries < maxRetries) {
+      try {
+        return await fetchFn();
+      } catch (err) {
+        if (
+          axios.isAxiosError(err) &&
+          err.response &&
+          err.response.status === 403 &&
+          err.response.headers["x-ratelimit-remaining"] === "0"
+        ) {
+          const resetTime =
+            parseInt(err.response.headers["x-ratelimit-reset"], 10) * 1000;
+          const waitTime = resetTime - Date.now();
+
+          if (waitTime > 0) {
+            await new Promise((resolve) => setTimeout(resolve, waitTime));
+          }
+          retries++;
+        } else {
+          throw err;
+        }
+      }
+    }
+    throw new Error("Max retries exceeded");
   };
 
   useEffect(() => {
@@ -81,45 +133,13 @@ function Page() {
         setGithubUser(githubUsername);
         setError(null);
 
-        const fetchWithRetry = async (
-          fetchFn: () => Promise<any>,
-          maxRetries = 3,
-        ) => {
-          let retries = 0;
-          while (retries < maxRetries) {
-            try {
-              return await fetchFn();
-            } catch (err) {
-              if (
-                axios.isAxiosError(err) &&
-                err.response &&
-                err.response.status === 403 &&
-                err.response.headers["x-ratelimit-remaining"] === "0"
-              ) {
-                const resetTime =
-                  parseInt(err.response.headers["x-ratelimit-reset"], 10) *
-                  1000;
-                const waitTime = resetTime - Date.now();
-
-                if (waitTime > 0) {
-                  await new Promise((resolve) => setTimeout(resolve, waitTime));
-                }
-
-                retries++;
-              } else {
-                throw err;
-              }
-            }
-          }
-          throw new Error("Max retries exceeded");
-        };
-
         const [
           reposResponse,
           issuesResponse,
           pullRequestsResponse,
           notificationsResponse,
           eventsResponse,
+          recentPRsResponse,
         ] = await Promise.all([
           fetchWithRetry(() =>
             githubApi.get(`/users/${githubUsername}/repos?per_page=100`),
@@ -138,37 +158,74 @@ function Page() {
           fetchWithRetry(() =>
             githubApi.get(`/users/${githubUsername}/events?per_page=5`),
           ),
+          fetchWithRetry(() =>
+            githubApi.get(`/search/issues?q=author:${githubUsername}+is:pr`),
+          ),
         ]);
+
+        const languages = reposResponse.data.reduce(
+          (acc: Record<string, number>, repo: Repo) => {
+            if (repo.language) {
+              acc[repo.language] = (acc[repo.language] || 0) + 1;
+            }
+            return acc;
+          },
+          {},
+        );
 
         setStats({
           totalProjects: reposResponse.data.length,
           issuesResolved: issuesResponse.data.total_count,
           prsReviewed: pullRequestsResponse.data.total_count,
           notifications: notificationsResponse.data.length,
+          longestStreak: calculateLongestStreak(eventsResponse.data),
+          openSourceContributions: recentPRsResponse.data.total_count,
         });
 
+        setLanguageStats(Object.entries(languages) as [string, number][]);
         setRecentActivity(eventsResponse.data);
+        setRecentPRs(recentPRsResponse.data.items.slice(0, 5));
 
         setIsLoading(false);
       } catch (err) {
         console.error("Error fetching GitHub data:", err);
-
         if (err instanceof AxiosError) {
-          if (err.response) {
-            setError("Error fetching GitHub data");
-          } else if (err.request) {
-            setError("No response received from GitHub API");
-          } else {
-            setError("Error setting up GitHub API request");
-          }
+          setError(
+            err.response
+              ? "Error fetching GitHub data"
+              : "No response received from GitHub API",
+          );
+        } else {
+          setError("Error setting up GitHub API request");
         }
-
         setIsLoading(false);
       }
     }
 
     fetchGitHubData();
   }, [user.current?.email]);
+
+  const calculateLongestStreak = (events: any[]) => {
+    const dates = events.map((event) =>
+      new Date(event.created_at).toDateString(),
+    );
+    const uniqueDates = Array.from(new Set(dates));
+    let streak = 0,
+      maxStreak = 0;
+
+    for (let i = 1; i < uniqueDates.length; i++) {
+      const diff =
+        new Date(uniqueDates[i]).getTime() -
+        new Date(uniqueDates[i - 1]).getTime();
+      if (diff === 86400000) {
+        streak++;
+        maxStreak = Math.max(maxStreak, streak);
+      } else {
+        streak = 0;
+      }
+    }
+    return maxStreak;
+  };
 
   if (isLoading) {
     return (
@@ -216,6 +273,80 @@ function Page() {
             Notifications
           </h2>
           <p className="text-2xl font-bold mt-2">{stats.notifications}</p>
+        </div>
+
+        <div className="bg-card p-6 rounded-lg shadow border border-border">
+          <h2 className="text-sm font-medium text-muted-foreground">
+            Open Source Contributions
+          </h2>
+          <p className="text-2xl font-bold mt-2">
+            {stats.openSourceContributions}
+          </p>
+        </div>
+      </section>
+
+      <section className="mb-8">
+        <h2 className="text-2xl font-bold mb-4">Top Languages Used</h2>
+        <div className="bg-card p-6 rounded-lg shadow border border-border">
+          {languageStats.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {languageStats.map(([language, count]) => {
+                const total = languageStats.reduce(
+                  (sum, [, cnt]) => sum + cnt,
+                  0,
+                );
+                const percentage = ((count / total) * 100).toFixed(1);
+
+                return (
+                  <div key={language} className="flex items-center space-x-4">
+                    <span className="font-medium text-sm w-20">{language}</span>
+                    <div className="flex-grow bg-muted-foreground rounded-full h-2">
+                      <div
+                        className="bg-primary h-2 rounded-full"
+                        style={{ width: `${percentage}%` }}
+                      />
+                    </div>
+                    <span className="text-muted-foreground text-xs">
+                      {percentage}%
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <p className="text-sm text-muted-foreground">
+              No language data available.
+            </p>
+          )}
+        </div>
+      </section>
+
+      <section className="mb-8">
+        <h2 className="text-2xl font-bold mb-4">Recent Pull Requests</h2>
+        <div className="bg-card p-6 rounded-lg shadow border border-border">
+          {recentPRs.length > 0 ? (
+            <ul className="space-y-4">
+              {recentPRs.map((pr) => (
+                <li key={pr.id} className="flex flex-col">
+                  <a
+                    href={pr.html_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 font-medium hover:underline"
+                  >
+                    {pr.title}
+                  </a>
+                  <p className="text-sm text-muted-foreground">
+                    {pr.repository_url.split("/").pop()} - {pr.state}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-sm text-muted-foreground">
+              No recent pull requests found.
+            </p>
+          )}
         </div>
       </section>
 
