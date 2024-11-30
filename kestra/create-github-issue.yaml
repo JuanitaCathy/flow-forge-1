@@ -1,0 +1,66 @@
+id: create-github-issue-on-failure
+namespace: hacktastic.team
+description: Workflow to create GitHub issues and send Discord notifications for executions
+
+variables:
+  kestra_url: http://4.188.74.224:8080
+
+inputs:
+  - id: github_token
+    type: STRING
+    required: true
+    description: GitHub token for creating issues
+  - id: github_repository
+    type: STRING
+    required: true
+    description: GitHub repository in the format `owner/repo`
+  - id: github_default_assignee
+    type: STRING
+    required: true
+    description: GitHub default assignee username
+  - id: discord_webhook_url
+    type: STRING
+    required: true
+    description: Discord webhook URL
+  - id: discord_avatar_url
+    type: STRING
+    required: false
+    defaults: "https://your-kestra-logo-url.png"
+    description: Avatar URL for Discord bot
+
+tasks:
+  - id: create_issue
+    type: io.kestra.plugin.github.issues.Create
+    jwtToken: "{{ inputs.github_token }}"
+    repository: "{{ inputs.github_repository }}"
+    title: "Workflow Execution: {{ flow.id }}"
+    body: |
+      New execution of workflow {{ flow.id }}
+      
+      **Execution Details:**
+      - Execution ID: {{ execution.id }}
+      - Start Time: {{ taskrun.startDate }}
+      - Current Task: {{ task.id }}
+    labels:
+      - workflow
+      - automation
+    assignees:
+      - "{{ inputs.github_default_assignee }}"
+
+  - id: send_discord_message
+    type: io.kestra.plugin.notifications.discord.DiscordExecution
+    url: "{{ inputs.discord_webhook_url }}"
+    username: Kestra Monitor
+    embedList:
+      - title: "🔵 Workflow Execution Notification"
+        description: |
+          **Flow:** {{ flow.id }}
+          **Execution ID:** {{ execution.id }}
+          **Task:** {{ task.id }}
+          
+          [View in Kestra UI]({{ vars.kestra_url }}/execution/{{ execution.id }})
+        color: 
+          - 0    # Red
+          - 0    # Green
+          - 255  # Blue
+    executionId: "{{ execution.id }}"

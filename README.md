@@ -3,9 +3,10 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/github/stars/ChiragAgg5k/flow-forge?style=flat-square" />
-  <img src="https://img.shields.io/github/forks/ChiragAgg5k/flow-forge?style=flat-square" />
-  <img src="https://img.shields.io/badge/LICENSE-MIT-green?style=flat-square"  />
+  <img src="https://img.shields.io/badge/LICENSE-MIT-brightgreen?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Azure-VM-0078D4?style=for-the-badge&logo=azure" />
+  <img src="https://img.shields.io/badge/Next.js-v14.2.6-black?style=for-the-badge&logo=next.js" />
+  <img src="https://img.shields.io/badge/Kestra-v0.19.12-9b59b6?style=for-the-badge" />
 </p>
 
 ### :star2: About
@@ -156,9 +157,7 @@ $~$
 <a href="https://github.com/ChiragAgg5k/flow-forge/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=ChiragAgg5k/flow-forge" />
 </a>
-<!--
-### :email: Contact 
-- Email and social media links.
-- Head over to [here](https://github.com/alexandresanlim/Badges4-README.md-Profile#-social-)
-  * Copy paste the social links you enjoy and drop them below (make sure to change the `href` to your own links
--->
+
+### :email: Contact
+
+- Email: chiragaggarwal5k@gmail.com
