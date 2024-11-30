@@ -1,7 +1,7 @@
 "use client";
+import { cn } from "@/lib/utils";
 import { ChevronRight } from "lucide-react";
 import AnimatedGradientText from "./animatedgradienttext";
-import { cn } from "@/lib/utils";
 
 export function AnimatedGradientTextDemo() {
   return (
