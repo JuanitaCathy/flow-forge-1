@@ -16,6 +16,7 @@ import {
   GitPullRequest,
   LayoutDashboard,
   Settings,
+  Notebook,
 } from "lucide-react";
 
 const items = [
@@ -33,6 +34,11 @@ const items = [
     title: "Settings",
     url: "/dashboard/settings",
     icon: Settings,
+  },
+  {
+    title: "Docs",
+    url: "/dashboard/docs",
+    icon: Notebook,
   },
 ];
 
