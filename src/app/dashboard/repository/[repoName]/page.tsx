@@ -1,6 +1,19 @@
 "use client";
 
 import { useUser } from "@/components/auth-provider";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import axios from "axios";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -34,6 +47,10 @@ function Repository() {
   const [repository, setRepository] = useState<RepositoryDetails | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const [issueTitle, setIssueTitle] = useState("");
+  const [issueDescription, setIssueDescription] = useState("");
+  const [sendDiscordNotification, setSendDiscordNotification] = useState(false);
 
   useEffect(() => {
     async function fetchGitHubData() {
@@ -97,7 +114,9 @@ function Repository() {
     <div className="min-h-screen bg-background text-foreground p-8">
       {/* Header */}
       <header className="mb-8">
-        <h1 className="text-3xl font-bold">{repository.name}</h1>
+        <h1 className="text-2xl font-bold">
+          <span className="text-zinc-500">{username}</span> / {repository.name}
+        </h1>
         <p className="text-muted-foreground text-sm mt-2">
           {repository.description || "No description provided"}
         </p>
@@ -134,14 +153,60 @@ function Repository() {
       <section className="mb-8">
         <h2 className="text-2xl font-bold mb-4">Actions</h2>
         <div className="flex flex-row gap-4">
-          <a
-            href={`${repository.html_url}/issues/new`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90"
-          >
-            Create Issue
-          </a>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
+                Create Issue
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Create New Issue</DialogTitle>
+                <DialogDescription>
+                  Provide details about the issue you want to create.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <Input
+                  placeholder="Issue Title"
+                  value={issueTitle}
+                  onChange={(e) => setIssueTitle(e.target.value)}
+                />
+                <Textarea
+                  placeholder="Issue Description"
+                  value={issueDescription}
+                  onChange={(e) => setIssueDescription(e.target.value)}
+                />
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="discord-notification"
+                    checked={sendDiscordNotification}
+                    onCheckedChange={(checked) =>
+                      setSendDiscordNotification(!!checked)
+                    }
+                  />
+                  <label
+                    htmlFor="discord-notification"
+                    className="text-sm text-muted-foreground"
+                  >
+                    Send Discord notification
+                  </label>
+                </div>
+              </div>
+              <DialogFooter>
+                <Button
+                  onClick={() => {
+                    console.log("Issue Title:", issueTitle);
+                    console.log("Issue Description:", issueDescription);
+                    setIssueTitle("");
+                    setIssueDescription("");
+                  }}
+                >
+                  Submit
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
           <a
             href={`${repository.html_url}/pulls`}
             target="_blank"
