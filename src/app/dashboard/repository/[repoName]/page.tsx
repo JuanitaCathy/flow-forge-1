@@ -14,9 +14,12 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { database } from "@/lib/appwrite";
+import { Query } from "appwrite";
 import axios from "axios";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 const githubApi = axios.create({
   baseURL: "https://api.github.com",
@@ -51,6 +54,34 @@ function Repository() {
   const [issueTitle, setIssueTitle] = useState("");
   const [issueDescription, setIssueDescription] = useState("");
   const [sendDiscordNotification, setSendDiscordNotification] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const [githubToken, setGitHubToken] = useState<string | null>(null);
+  const [discordWebhook, setDiscordWebhook] = useState<string | null>(null);
+
+  const fetchSettings = async () => {
+    if (!user.current?.$id) return;
+
+    try {
+      const response = await database.listDocuments(
+        process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
+        process.env.NEXT_PUBLIC_APPWRITE_COLLECTION_ID!,
+        [Query.equal("userId", user.current.$id)],
+      );
+
+      if (response.documents.length > 0) {
+        const doc = response.documents[0];
+        setGitHubToken(doc.githubToken || null);
+        setDiscordWebhook(doc.discordWebhook || null);
+      }
+    } catch (error) {
+      console.error("Failed to fetch settings:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchSettings();
+  }, [user.current?.$id]);
 
   useEffect(() => {
     async function fetchGitHubData() {
@@ -91,6 +122,35 @@ function Repository() {
       fetchGitHubData();
     }
   }, [repoName, user?.current?.email]);
+
+  const createIssue = async () => {
+    try {
+      if (!repository || !githubToken || !discordWebhook) {
+        toast.error(
+          "Failed to create issue. Repository or settings not found.",
+        );
+        setIsDialogOpen(false);
+        return;
+      }
+
+      const payload = {
+        github_token: githubToken,
+        github_repository: repository.name,
+        github_default_assignee: username,
+        discord_webhook_url: discordWebhook,
+      };
+
+      await fetch("/api/create-issue", {
+        method: "POST",
+        body: JSON.stringify(payload),
+      });
+
+      toast.success("Issue created successfully!");
+      setIsDialogOpen(false);
+    } catch (error) {
+      console.error("Error creating issue:", error);
+    }
+  };
 
   if (isLoading || !repository) {
     return (
@@ -153,9 +213,12 @@ function Repository() {
       <section className="mb-8">
         <h2 className="text-2xl font-bold mb-4">Actions</h2>
         <div className="flex flex-row gap-4">
-          <Dialog>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
+              <Button
+                className="bg-primary text-primary-foreground hover:bg-primary/90"
+                onClick={() => setIsDialogOpen(true)}
+              >
                 Create Issue
               </Button>
             </DialogTrigger>
@@ -194,16 +257,7 @@ function Repository() {
                 </div>
               </div>
               <DialogFooter>
-                <Button
-                  onClick={() => {
-                    console.log("Issue Title:", issueTitle);
-                    console.log("Issue Description:", issueDescription);
-                    setIssueTitle("");
-                    setIssueDescription("");
-                  }}
-                >
-                  Submit
-                </Button>
+                <Button onClick={createIssue}>Submit</Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>
