@@ -9,11 +9,12 @@
 </p>
 
 ### :star2: About
+
 Transform your GitHub workflow from chaos to clockwork. FlowForge
 orchestrates your repositories, automates issue management, and
 streamlines PR reviews from one powerful dashboard.
 
-###  :movie_camera: Demo
+### :movie_camera: Demo
 
 <p align="center">
     <a href="https://youtu.be">
@@ -25,8 +26,8 @@ $~$
 
 ### 🚀 Deployment
 
-- **Kestra**: Deployed on an **Azure Virtual Machine**.  
-- **Flow-Forge Next.js App**: Deployed on **Vercel**.  
+- **Kestra**: Deployed on an **Azure Virtual Machine**.
+- **Flow-Forge Next.js App**: Deployed on **Vercel**.
 
 <!--
 $~$

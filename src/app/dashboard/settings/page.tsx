@@ -41,7 +41,6 @@ function Settings() {
     setIsLoading(true);
     try {
       if (documentId) {
-        // Update the existing document
         await database.updateDocument(
           process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
           process.env.NEXT_PUBLIC_APPWRITE_COLLECTION_ID!,
@@ -51,7 +50,6 @@ function Settings() {
           },
         );
       } else {
-        // Create a new document
         const response = await database.createDocument(
           process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
           process.env.NEXT_PUBLIC_APPWRITE_COLLECTION_ID!,
@@ -61,7 +59,7 @@ function Settings() {
             [field]: value,
           },
         );
-        setDocumentId(response.$id); // Save the new document ID
+        setDocumentId(response.$id);
       }
       toast.success(`${field} updated successfully!`);
     } catch (error) {
@@ -74,7 +72,7 @@ function Settings() {
 
   useEffect(() => {
     fetchSettings();
-  }, []);
+  }, [user.current?.$id]);
 
   return (
     <div className="min-h-screen bg-background text-foreground p-8">
