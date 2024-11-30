@@ -39,12 +39,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 {breadcrumbSegments.map((segment, index) => (
                   <>
                     {index === breadcrumbSegments.length - 1 ? (
-                      <BreadcrumbItem key={index}>
+                      <BreadcrumbItem key={`${index} ${segment}`}>
                         <BreadcrumbPage>{segment}</BreadcrumbPage>
                       </BreadcrumbItem>
                     ) : (
                       <>
-                        <BreadcrumbItem key={index}>
+                        <BreadcrumbItem key={`${index} ${segment}`}>
                           <BreadcrumbLink
                             href={`/${breadcrumbSegments
                               .slice(0, index + 1)
@@ -54,7 +54,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                             {segment}
                           </BreadcrumbLink>
                         </BreadcrumbItem>
-                        <BreadcrumbSeparator />
+                        <BreadcrumbSeparator
+                          key={`${index} ${segment} separator`}
+                        />
                       </>
                     )}
                   </>

@@ -1,11 +1,80 @@
 "use client";
 
 import { useUser } from "@/components/auth-provider";
-import { useState } from "react";
+import { database } from "@/lib/appwrite";
+import { ID, Query } from "appwrite";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 function Settings() {
   const user = useUser();
   const [isLoading, setIsLoading] = useState(false);
+  const [githubToken, setGitHubToken] = useState("");
+  const [discordWebhook, setDiscordWebhook] = useState("");
+  const [documentId, setDocumentId] = useState<string | null>(null);
+
+  const fetchSettings = async () => {
+    setIsLoading(true);
+    try {
+      if (!user.current?.$id) return;
+
+      const response = await database.listDocuments(
+        process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
+        process.env.NEXT_PUBLIC_APPWRITE_COLLECTION_ID!,
+        [Query.equal("userId", user.current.$id)],
+      );
+
+      if (response.documents.length > 0) {
+        const doc = response.documents[0];
+        setDocumentId(doc.$id);
+        setGitHubToken(doc.githubToken || "");
+        setDiscordWebhook(doc.discordWebhook || "");
+      }
+    } catch (error) {
+      console.error("Failed to fetch settings:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const updateField = async (field: string, value: string) => {
+    setIsLoading(true);
+    try {
+      if (documentId) {
+        // Update the existing document
+        await database.updateDocument(
+          process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
+          process.env.NEXT_PUBLIC_APPWRITE_COLLECTION_ID!,
+          documentId,
+          {
+            [field]: value,
+          },
+        );
+      } else {
+        // Create a new document
+        const response = await database.createDocument(
+          process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
+          process.env.NEXT_PUBLIC_APPWRITE_COLLECTION_ID!,
+          ID.unique(),
+          {
+            userId: user.current?.$id,
+            [field]: value,
+          },
+        );
+        setDocumentId(response.$id); // Save the new document ID
+      }
+      toast.success(`${field} updated successfully!`);
+    } catch (error) {
+      console.error(`Failed to update ${field}:`, error);
+      toast.error(`Failed to update ${field}.`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchSettings();
+  }, []);
 
   return (
     <div className="min-h-screen bg-background text-foreground p-8">
@@ -34,10 +103,16 @@ function Settings() {
                   id="github-token"
                   type="password"
                   placeholder="Enter your GitHub token"
+                  value={githubToken}
+                  onChange={(e) => setGitHubToken(e.target.value)}
                   className="px-4 w-full py-2 border border-border rounded-lg bg-input text-input-foreground focus:outline-none focus:ring focus:ring-primary/50"
                 />
-                <button className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90">
-                  Save
+                <button
+                  onClick={() => updateField("githubToken", githubToken)}
+                  disabled={isLoading}
+                  className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90"
+                >
+                  {isLoading ? "Saving..." : "Save"}
                 </button>
               </div>
             </div>
@@ -60,10 +135,16 @@ function Settings() {
                   id="discord-webhook"
                   type="url"
                   placeholder="Enter your Discord webhook URL"
+                  value={discordWebhook}
+                  onChange={(e) => setDiscordWebhook(e.target.value)}
                   className="px-4 w-full py-2 border border-border rounded-lg bg-input text-input-foreground focus:outline-none focus:ring focus:ring-primary/50"
                 />
-                <button className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90">
-                  Save
+                <button
+                  onClick={() => updateField("discordWebhook", discordWebhook)}
+                  disabled={isLoading}
+                  className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90"
+                >
+                  {isLoading ? "Saving..." : "Save"}
                 </button>
               </div>
             </div>

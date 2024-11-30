@@ -1,4 +1,4 @@
-import { Workflow } from "lucide-react";
+import { MenuIcon, Workflow } from "lucide-react";
 
 export const Navbar = () => {
   return (
@@ -11,11 +11,7 @@ export const Navbar = () => {
               <Workflow className="h-10 w-10 inline-flex justify-center items-center rounded-lg" />
             </div>
             <div className="border border-white border-opacity-30 h-10 w-10 inline-flex justify-center items-center rounded-lg sm:hidden">
-              <img
-                src="../../assets/icons/menu.svg"
-                alt="Menu"
-                className="text-white"
-              />
+              <MenuIcon className="h-6 w-6" />
             </div>
             <nav className="text-white gap-6 items-center hidden sm:flex">
               <a href="/sign-in">
