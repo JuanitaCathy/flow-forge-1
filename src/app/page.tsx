@@ -12,18 +12,16 @@ import { ProductShowcase } from "@/components/landing-page/ProductShowcase";
 export default function Home() {
   return (
     <>
-      <div className="overflow-x-hidden">
-        <Navbar />
-        <Hero />
-        <LogoTicker />
+      <Navbar />
+      <Hero />
+      <LogoTicker />
 
-        <Features />
+      <Features />
 
-        <ProductShowcase />
-        <FAQs />
+      <ProductShowcase />
+      <FAQs />
 
-        <CallToAction />
-      </div>
+      <CallToAction />
       <Footer />
     </>
   );
