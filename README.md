@@ -123,6 +123,41 @@ Flow-Forge simplifies continuous integration and delivery with:
 
 $~$
 
+# 🛠️ VS Code Integration
+
+## Features
+
+### Notifications
+- Receive real-time updates about Kestra workflows (success or failure) directly in VS Code.
+
+### Logs
+- Access detailed workflow logs in the "Kestra Logs" output channel.
+
+### Commands
+- Execute tasks like fetching GitHub workflows or creating issues, all from within VS Code.
+
+---
+
+## Benefits
+- **Reduces Context Switching**: Stay within the VS Code environment without jumping between tools.
+- **Simplifies Monitoring and Debugging**: View detailed logs and workflow statuses effortlessly.
+- **Keeps Developers Focused**: All workflow management features are seamlessly integrated into your IDE.
+
+---
+
+## How It Works
+
+### Kestra Workflow
+- Sends HTTP requests to the VS Code extension:
+  - **`/notify`**: Sends notifications about workflow statuses.
+  - **`/logs`**: Sends execution logs.
+
+### VS Code Extension
+- Displays updates in real-time, enabling seamless workflow management directly within the IDE.
+
+$~$
+
+
 ### :page_facing_up: License
 
 This project is licensed under the **MIT License**.  
