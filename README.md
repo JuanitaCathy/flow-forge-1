@@ -56,6 +56,7 @@ $~$
 
 - **GitHub PAT**: Required for API access.
 - **Discord/Slack Webhooks**: Notification channels setup.
+- **Appwrite**: Database and collection setup.
 - **Azure VM**: Deployment platform for backend services.
 - **Node.js & npm**: Runtime and package manager.
 
@@ -64,57 +65,37 @@ $~$
 1. **Clone Repository**
 
    ```bash
-   git clone <repo-url>
-   cd ci-cd-manager
+   git clone https://github.com/ChiragAgg5k/flow-forge
+   cd flow-forge
    ```
 
 2. **Install Dependencies**
 
    ```bash
-   npm install
+   pnpm install
    ```
 
 3. **Configure Environment Variables**
    Add a `.env.local` file with:
 
    ```plaintext
-   GITHUB_TOKEN=<your_token>
-   DISCORD_WEBHOOK_URL=<webhook_url>
-   SLACK_WEBHOOK_URL=<webhook_url>
+   NEXT_PUBLIC_APPWRITE_PROJECT_ID = <your_project_id>
+   NEXT_PUBLIC_APPWRITE_DATABASE_ID = <your_database_id>
+   NEXT_PUBLIC_APPWRITE_COLLECTION_ID = <your_collection_id>
+
+   NEXT_PUBLIC_GITHUB_TOKEN = <your_token>
+
+   GROQ_API_KEY = <your_key>
    ```
 
 4. **Build Application**
 
    ```bash
-   npm run build
+   pnpm build
    ```
 
 5. **Deploy on Azure VM**
-   - Transfer project files to VM.
-   - Start the app with PM2:
-     ```bash
-     pm2 start npm --name "flow-forge" -- start
-     ```
-
-<!--
-$~$
-
-###  :file_folder: File Structure
-
-```
-
-```
-
-### :bicyclist: Roadmap
-_Current version number_
-- [x] Introduction of Concept
-- [x] Feature 1
-- [ ] Feature 2
-- [ ] Revisit Feature 1
-    - [ ] Improve XYZ
-    - [ ] Revamp CSS
--->
-
+   - Follow the instructors on [Kestra.io](https://kestra.io/) on how to deploy Kestra on Azure VM, and replace the public IP address for it in the code. You can find the [workflow file](./kestra/create-github-issue.yaml) here.
 $~$
 
 ## 📑 Documentation Highlights
