@@ -7,6 +7,7 @@
   <img src="https://img.shields.io/badge/Azure-VM-0078D4?style=for-the-badge&logo=azure" />
   <img src="https://img.shields.io/badge/Next.js-v14.2.6-black?style=for-the-badge&logo=next.js" />
   <img src="https://img.shields.io/badge/Kestra-v0.19.12-9b59b6?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Appwrite-F02E65?style=for-the-badge&logo=appwrite&logoColor=white" />
 </p>
 
 ### :star2: About
