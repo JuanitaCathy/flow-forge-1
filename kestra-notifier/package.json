@@ -1,0 +1,68 @@
+{
+  "name": "kestra-notifier",
+  "displayName": "kestra-notifier",
+  "description": "",
+  "version": "0.0.1",
+  "publisher": "chelsea",
+  "engines": {
+    "vscode": "^1.95.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:kestra-notifier.fetchWorkflows",
+        "onCommand:kestra-notifier.createGitHubIssue",
+        "onCommand:kestra-notifier.helloWorld"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "kestra-notifier.fetchWorkflows",
+        "title": "Kestra Notifier: Fetch Workflows"
+    },
+    {
+        "command": "kestra-notifier.createGitHubIssue",
+        "title": "Kestra Notifier: Create GitHub Issue"
+    },
+    {
+        "command": "kestra-notifier.helloWorld",
+        "title": "Kestra Notifier: Hello World"
+    }
+    ],
+    "configuration": {
+      "type": "object",
+      "properties": {
+        "kestra-notifier.githubRepo": {
+          "type": "string",
+          "default": "",
+          "description": "GitHub repository (e.g., owner/repo) for fetching workflows."
+        },
+        "kestra-notifier.githubToken": {
+          "type": "string",
+          "default": "",
+          "description": "GitHub Personal Access Token."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.9",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.95.0",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "eslint": "^9.13.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "node-fetch": "^3.3.2"
+  }
+}
