@@ -22,9 +22,12 @@ export default function LogoCarousel() {
         {/* First set of logos */}
         <div className="animate-infinite-scroll flex shrink-0 items-center justify-around gap-12 py-4">
           {logos.map((logo, index) => (
-            <div key={index} className="w-[150px] max-w-[150px] flex items-center justify-center">
-              <Image 
-                src={logo.src} 
+            <div
+              key={index}
+              className="w-[150px] max-w-[150px] flex items-center justify-center"
+            >
+              <Image
+                src={logo.src}
                 alt={logo.alt}
                 className="h-8 w-auto object-contain opacity-70 grayscale transition-all hover:opacity-100 hover:grayscale-0"
               />
@@ -34,9 +37,12 @@ export default function LogoCarousel() {
         {/* Duplicate set of logos for seamless scrolling */}
         <div className="animate-infinite-scroll flex shrink-0 items-center justify-around gap-12 py-4">
           {logos.map((logo, index) => (
-            <div key={index} className="w-[150px] max-w-[150px] flex items-center justify-center">
-              <Image 
-                src={logo.src} 
+            <div
+              key={index}
+              className="w-[150px] max-w-[150px] flex items-center justify-center"
+            >
+              <Image
+                src={logo.src}
                 alt={logo.alt}
                 className="h-8 w-auto object-contain opacity-70 grayscale transition-all hover:opacity-100 hover:grayscale-0"
               />

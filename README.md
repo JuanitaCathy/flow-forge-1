@@ -96,7 +96,7 @@ $~$
 
 5. **Deploy on Azure VM**
    - Follow the instructors on [Kestra.io](https://kestra.io/) on how to deploy Kestra on Azure VM, and replace the public IP address for it in the code. You can find the [workflow file](./kestra/create-github-issue.yaml) here.
-$~$
+     $~$
 
 ## 📑 Documentation Highlights
 

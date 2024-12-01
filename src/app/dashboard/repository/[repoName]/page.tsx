@@ -78,7 +78,7 @@ function Repository() {
       const response = await database.listDocuments(
         process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
         process.env.NEXT_PUBLIC_APPWRITE_COLLECTION_ID!,
-        [Query.equal("userId", user.current.$id)]
+        [Query.equal("userId", user.current.$id)],
       );
 
       if (response.documents.length > 0) {
@@ -104,7 +104,7 @@ function Repository() {
 
         // Fetch GitHub username
         const userSearchResponse = await githubApi.get(
-          `/search/users?q=${encodeURIComponent(user.current.email)}+in:email`
+          `/search/users?q=${encodeURIComponent(user.current.email)}+in:email`,
         );
 
         if (userSearchResponse.data.total_count === 0) {
@@ -118,20 +118,20 @@ function Repository() {
 
         // Fetch repository details
         const repoResponse = await githubApi.get(
-          `/repos/${fetchedUsername}/${repoName}`
+          `/repos/${fetchedUsername}/${repoName}`,
         );
 
         const pullRequestResponse = await githubApi.get(
-          `/repos/${fetchedUsername}/${repoName}/pulls`
+          `/repos/${fetchedUsername}/${repoName}/pulls`,
         );
         setPullRequests(pullRequestResponse.data);
 
         // Fetch open issues
         const issuesResponse = await githubApi.get(
-          `/repos/${fetchedUsername}/${repoName}/issues`
+          `/repos/${fetchedUsername}/${repoName}/issues`,
         );
         setIssues(
-          issuesResponse.data.filter((issue: any) => !issue.pull_request)
+          issuesResponse.data.filter((issue: any) => !issue.pull_request),
         );
 
         setRepository(repoResponse.data);
@@ -153,7 +153,7 @@ function Repository() {
     try {
       if (!repository || !githubToken || !discordWebhook) {
         toast.error(
-          "Failed to create issue. Repository or settings not found."
+          "Failed to create issue. Repository or settings not found.",
         );
         return;
       }
