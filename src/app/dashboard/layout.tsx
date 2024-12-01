@@ -15,23 +15,22 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Metadata } from "next";
 import { usePathname } from "next/navigation";
 
-export const metadata: Metadata = {
-  metadataBase: new URL("https://flow-forge-iota.vercel.app"),
-  title: "Flow Forge - GitHub Workflow Manager",
-  description:
-    "Flow Forge is a GitHub workflow manager that simplifies project management by integrating with tools like Kestra for workflow management.",
-  openGraph: { 
-    title: "Flow Forge - GitHub Workflow Manager",
-    description:
-      "Streamline your GitHub workflow with FlowForge, automating issue management and PR reviews from one powerful dashboard.",
-    images: ["/preview.png"],
-    url: "https://flow-forge-iota.vercel.app",
-    type: "website",
-  },
-};
+// export const metadata: Metadata = {
+//   metadataBase: new URL("https://flow-forge-iota.vercel.app"),
+//   title: "Flow Forge - GitHub Workflow Manager",
+//   description:
+//     "Flow Forge is a GitHub workflow manager that simplifies project management by integrating with tools like Kestra for workflow management.",
+//   openGraph: { 
+//     title: "Flow Forge - GitHub Workflow Manager",
+//     description:
+//       "Streamline your GitHub workflow with FlowForge, automating issue management and PR reviews from one powerful dashboard.",
+//     images: ["/preview.png"],
+//     url: "https://flow-forge-iota.vercel.app",
+//     type: "website",
+//   },
+// };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const location = usePathname();

@@ -1,9 +1,11 @@
 import { AuthProvider } from "@/components/auth-provider";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { CopilotKit } from "@copilotkit/react-core";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import "@copilotkit/react-textarea/styles.css";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -33,15 +35,17 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-            <Toaster />
-          </ThemeProvider>
+          <CopilotKit runtimeUrl="/api/copilotkit">
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+              <Toaster />
+            </ThemeProvider>
+          </CopilotKit>
         </body>
       </html>
     </AuthProvider>
