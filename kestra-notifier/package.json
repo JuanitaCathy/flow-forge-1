@@ -10,11 +10,6 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [
-    "onCommand:kestra-notifier.fetchWorkflows",
-        "onCommand:kestra-notifier.createGitHubIssue",
-        "onCommand:kestra-notifier.helloWorld"
-  ],
   "main": "./extension.js",
   "contributes": {
     "commands": [
