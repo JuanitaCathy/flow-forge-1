@@ -17,9 +17,18 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Flow Forge",
+  metadataBase: new URL("https://flow-forge-iota.vercel.app"),
+  title: "Flow Forge - GitHub Workflow Manager",
   description:
-    "A platform for developers to create and manage their github workflows.",
+    "Flow Forge is a GitHub workflow manager that simplifies project management by integrating with tools like Kestra for workflow management.",
+  openGraph: {
+    title: "Flow Forge - GitHub Workflow Manager",
+    description:
+      "Streamline your GitHub workflow with FlowForge, automating issue management and PR reviews from one powerful dashboard.",
+    images: ["/preview.png"],
+    url: "https://flow-forge-iota.vercel.app",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
