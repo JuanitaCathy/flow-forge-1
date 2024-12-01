@@ -18,6 +18,8 @@
 
 https://github.com/user-attachments/assets/5eacb4af-2bfd-4ee7-af4d-356c5c77519c
 
+📼 You can also find our Hackfrost submission video here: https://youtu.be/-FPnJWJPmk8?feature=shared
+
 ### 🚀 Deployment
 
 - **Kestra**: Deployed on an **Azure Virtual Machine**.
