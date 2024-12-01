@@ -15,17 +15,17 @@ export const ProductShowcase = () => {
 
   return (
     <div className="bg-black text-white bg-gradient-to-b from-black to-[#5D2CA8] py-[72px] sm:py-24">
-      <h2 className="text-center text-5xl font-bold tracking-tighter">
+      <h2 className="text-center text-3xl sm:text-5xl font-bold tracking-tighter">
         Command Your Workflow
       </h2>
-      <div className="max-w-xl mx-auto">
-        <p className="text-xl text-white/70 text-center mt-5">
+      <div className="max-w-sm sm:max-w-xl mx-auto">
+        <p className="text-lg sm:text-xl text-white/70 text-center mt-5">
           A powerful dashboard that puts GitHub automation at your fingertips.
           Create issues from templates, manage PRs, and get Discord
           notifications - all from one intuitive interface.
         </p>
       </div>
-      <div className="flex justify-center">
+      <div className="hidden sm:flex justify-center">
         <motion.div
           style={{
             opacity: opacity,

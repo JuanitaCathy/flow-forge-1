@@ -17,24 +17,33 @@ export default function LogoCarousel() {
   ];
 
   return (
-    <div className="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
-      <ul className="flex items-center justify-center md:justify-start [&_li]:mx-8 [&_img]:max-w-none animate-infinite-scroll">
-        {logos.map((logo, index) => (
-          <li key={index}>
-            <Image src={logo.src} alt={logo.alt} />
-          </li>
-        ))}
-      </ul>
-      <ul
-        className="flex items-center justify-center md:justify-start [&_li]:mx-8 [&_img]:max-w-none animate-infinite-scroll"
-        aria-hidden="true"
-      >
-        {logos.map((logo, index) => (
-          <li key={index}>
-            <Image src={logo.src} alt={logo.alt} />
-          </li>
-        ))}
-      </ul>
+    <div className="relative w-full overflow-hidden bg-black before:absolute before:left-0 before:top-0 before:z-[2] before:h-full before:w-[100px] before:bg-[linear-gradient(to_right,black_0%,transparent_100%)] before:content-[''] after:absolute after:right-0 after:top-0 after:z-[2] after:h-full after:w-[100px] after:bg-[linear-gradient(to_left,black_0%,transparent_100%)] after:content-['']">
+      <div className="flex w-full">
+        {/* First set of logos */}
+        <div className="animate-infinite-scroll flex shrink-0 items-center justify-around gap-12 py-4">
+          {logos.map((logo, index) => (
+            <div key={index} className="w-[150px] max-w-[150px] flex items-center justify-center">
+              <Image 
+                src={logo.src} 
+                alt={logo.alt}
+                className="h-8 w-auto object-contain opacity-70 grayscale transition-all hover:opacity-100 hover:grayscale-0"
+              />
+            </div>
+          ))}
+        </div>
+        {/* Duplicate set of logos for seamless scrolling */}
+        <div className="animate-infinite-scroll flex shrink-0 items-center justify-around gap-12 py-4">
+          {logos.map((logo, index) => (
+            <div key={index} className="w-[150px] max-w-[150px] flex items-center justify-center">
+              <Image 
+                src={logo.src} 
+                alt={logo.alt}
+                className="h-8 w-auto object-contain opacity-70 grayscale transition-all hover:opacity-100 hover:grayscale-0"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

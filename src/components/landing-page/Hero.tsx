@@ -17,7 +17,7 @@ export const Hero = () => {
         <div className="flex items-center justify-center -mt-10"></div>
         <div className="flex justify-center mt-8 ">
           <div className="inline-flex relative">
-            <h1 className="text-7xl sm:text-8xl font-bold tracking-tightner text-center inline-flex">
+            <h1 className="text-6xl sm:text-8xl font-bold tracking-tightner text-center inline-flex">
               Flow Forge
             </h1>
             <motion.div
@@ -68,7 +68,7 @@ export const Hero = () => {
           </div>
         </div>
         <div className="flex justify-center">
-          <p className="text-xl text-center mt-8 max-w-md">
+          <p className="text-lg sm:text-xl text-center mt-8 max-w-sm md:max-w-md">
             Streamline your GitHub workflow with FlowForge, automating{" "}
             <span className="text-gradient bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">
               issue management

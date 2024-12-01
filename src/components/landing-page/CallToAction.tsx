@@ -22,14 +22,14 @@ export const CallToAction = () => {
       ref={containerRef}
     >
       <div className="container max-w-xl relative flex flex-col items-center">
-        <motion.div style={{ translateY }} className="w-full">
+        <motion.div style={{ translateY }} className="hidden md:block w-full">
           <Image
             src={HelixImage}
             alt="helix"
             className="absolute top-6 left-[calc(100%+36px)] sm:left-[calc(100%+20px)]"
           />
         </motion.div>
-        <motion.div style={{ translateY }} className="w-full">
+        <motion.div style={{ translateY }} className="hidden md:block w-full">
           <Image
             src={EmojiImage}
             alt="emoji"

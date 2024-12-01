@@ -7,7 +7,7 @@ export const Footer = () => {
         <div className="text-center ml-4">
           2024 Flow Forge. All rights are reserved.
         </div>
-        <ul className="flex justify-center gap-4 mr-8">
+        <ul className="hidden sm:flex justify-center gap-4 mr-8">
           <li>
             <a
               href="https://github.com/chiragagg5k/flow-forge"
